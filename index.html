@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiGovOps Global Inclusion Matchmaker</title>
+<style>
+:root{--c1:#1a5632;--c2:#c4820e;--c3:#2563eb;--bg:#f8fafc;--tx:#1a1a1a;--bd:#e5e7eb;--r:8px;--sh:0 1px 3px rgba(0,0,0,.1);--f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);line-height:1.6}
+.header{background:var(--c1);color:#fff;padding:1rem 2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.header h1{font-size:1.4rem}
+.header .sub{opacity:.85;font-size:.85rem}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--bd);overflow-x:auto;padding:0 1rem}
+.tab-btn{padding:.75rem 1.25rem;border:none;background:none;cursor:pointer;font-size:.9rem;font-family:var(--f);white-space:nowrap;border-bottom:3px solid transparent;color:#666;transition:.2s}
+.tab-btn:hover{color:var(--c1)}
+.tab-btn.active{color:var(--c1);border-bottom-color:var(--c2);font-weight:600}
+.tab-content{display:none;padding:1.5rem;max-width:1400px;margin:0 auto}
+.tab-content.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0}
+.stat{background:#fff;border-radius:var(--r);padding:1.25rem;text-align:center;box-shadow:var(--sh);border-left:4px solid var(--c2)}
+.stat .num{font-size:2rem;font-weight:700;color:var(--c1)}
+.stat .lbl{font-size:.8rem;color:#666;text-transform:uppercase}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}
+.pillar{background:#fff;border-radius:var(--r);padding:1rem;box-shadow:var(--sh);border-top:3px solid var(--c3)}
+.pillar h3{font-size:.95rem;color:var(--c1);margin-bottom:.3rem}
+.pillar p{font-size:.8rem;color:#666}
+.countries{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0}
+.country-card{background:#fff;border-radius:var(--r);padding:.75rem;box-shadow:var(--sh);cursor:pointer;transition:.2s;border-left:3px solid var(--c2)}
+.country-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.country-card h4{color:var(--c1);font-size:.9rem}
+.country-card p{font-size:.75rem;color:#666}
+.filters{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;padding:1rem;background:#fff;border-radius:var(--r);box-shadow:var(--sh)}
+.filters select,.filters input{padding:.5rem;border:1px solid var(--bd);border-radius:4px;font-family:var(--f);font-size:.85rem}
+.filters input{flex:1;min-width:200px}
+.org-grid,.funder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.card{background:#fff;border-radius:var(--r);padding:1.25rem;box-shadow:var(--sh);border-left:4px solid var(--c1);transition:.2s}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.card h3{font-size:1rem;color:var(--c1);margin-bottom:.25rem}
+.card .meta{font-size:.8rem;color:#888;margin-bottom:.5rem}
+.card .mission{font-size:.85rem;margin-bottom:.5rem}
+.card .tags{display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:.5rem}
+.tag{background:#e8f5e9;color:var(--c1);padding:2px 8px;border-radius:12px;font-size:.7rem}
+.card .links{display:flex;gap:.75rem;font-size:.8rem}
+.card .links a{color:var(--c3);text-decoration:none}
+.card .links a:hover{text-decoration:underline}
+.funder-card{border-left-color:var(--c2)}
+.funder-card .range{font-weight:600;color:var(--c2)}
+.match-input{width:100%;padding:1rem;border:2px solid var(--bd);border-radius:var(--r);font-family:var(--f);font-size:1rem;min-height:120px;resize:vertical;margin-bottom:1rem}
+.match-input:focus{outline:none;border-color:var(--c3)}
+.match-btn{background:var(--c1);color:#fff;border:none;padding:.75rem 2rem;border-radius:var(--r);cursor:pointer;font-size:1rem;font-family:var(--f)}
+.match-btn:hover{background:#145228}
+.results{margin-top:1.5rem}
+.results h3{margin-bottom:1rem;color:var(--c1)}
+.score{display:inline-block;background:var(--c2);color:#fff;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;margin-left:.5rem}
+.proposal-form{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem}
+.proposal-form select{padding:.5rem;border:1px solid var(--bd);border-radius:4px;font-family:var(--f)}
+.proposal-output{background:#fff;border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);white-space:pre-wrap;font-size:.9rem;line-height:1.7;max-height:600px;overflow-y:auto}
+.proposal-output h2{color:var(--c1);margin:1rem 0 .5rem}
+.copy-btn{background:var(--c3);color:#fff;border:none;padding:.5rem 1.5rem;border-radius:4px;cursor:pointer;font-family:var(--f);margin-top:1rem}
+.copy-btn:hover{background:#1d4ed8}
+.vision{background:linear-gradient(135deg,#1a5632,#2d7a4a);color:#fff;padding:2rem;border-radius:var(--r);margin-bottom:1.5rem}
+.vision h2{font-size:1.3rem;margin-bottom:.75rem}
+.vision p{opacity:.9;font-size:.95rem}
+.count{font-size:.85rem;color:#666;margin-bottom:1rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:768px){.proposal-form,.two-col{grid-template-columns:1fr}.org-grid,.funder-grid{grid-template-columns:1fr}.header{flex-direction:column;text-align:center}}
+footer{text-align:center;padding:2rem;color:#888;font-size:.8rem;border-top:1px solid var(--bd)}
+</style>
+</head>
+<body>
+<div class="header">
+<div>
+<h1>AiGovOps Global Inclusion Matchmaker</h1>
+<div class="sub">Policy-as-Code for Indigenous & Rural AI Governance | Apache 2.0 Open Source</div>
+</div>
+</div>
+<nav class="tabs" role="tablist">
+<button class="tab-btn active" onclick="showTab('dashboard')" role="tab" aria-selected="true">Dashboard</button>
+<button class="tab-btn" onclick="showTab('organizations')" role="tab">Organizations</button>
+<button class="tab-btn" onclick="showTab('funders')" role="tab">Funders</button>
+<button class="tab-btn" onclick="showTab('matchmaker')" role="tab">Matchmaker</button>
+<button class="tab-btn" onclick="showTab('proposals')" role="tab">Proposal Generator</button>
+</nav>
+<main>
+<!-- Dashboard Tab -->
+<section id="dashboard" class="tab-content active" role="tabpanel">
+<div class="vision">
+<h2>Vision</h2>
+<p>A world where every community -- regardless of geography, language, income, or ancestry -- has the sovereign capacity to shape, govern, and benefit from artificial intelligence.</p>
+<h2 style="margin-top:1rem">Mission</h2>
+<p>Ship policy-as-code for AI -- turning ethical principles, regulatory compliance, and community values into automated, open-source, and auditable governance frameworks accessible to all.</p>
+</div>
+<div class="stats" id="statsGrid"></div>
+<h3 style="margin:1.5rem 0 .75rem;color:var(--c1)">Six Governance Pillars</h3>
+<div class="pillars" id="pillarsGrid"></div>
+<h3 style="margin:1.5rem 0 .75rem;color:var(--c1)">Target Countries</h3>
+<div class="countries" id="countriesGrid"></div>
+</section>
+
+<!-- Organizations Tab -->
+<section id="organizations" class="tab-content" role="tabpanel">
+<h2 style="color:var(--c1);margin-bottom:1rem">Organizations Database</h2>
+<div class="filters">
+<select id="orgCountry" onchange="filterOrgs()"><option value="">All Countries</option></select>
+<select id="orgTopic" onchange="filterOrgs()"><option value="">All Topics</option></select>
+<select id="orgType" onchange="filterOrgs()"><option value="">All Types</option></select>
+<input type="search" id="orgSearch" placeholder="Search organizations..." oninput="filterOrgs()">
+</div>
+<div class="count" id="orgCount"></div>
+<div class="org-grid" id="orgGrid"></div>
+</section>
+
+<!-- Funders Tab -->
+<section id="funders" class="tab-content" role="tabpanel">
+<h2 style="color:var(--c1);margin-bottom:1rem">Funders & Grant Programs</h2>
+<div class="filters">
+<select id="funderTopic" onchange="filterFunders()"><option value="">All Topics</option></select>
+<select id="funderType" onchange="filterFunders()"><option value="">All Types</option></select>
+<select id="funderGeo" onchange="filterFunders()"><option value="">All Regions</option></select>
+<input type="search" id="funderSearch" placeholder="Search funders..." oninput="filterFunders()">
+</div>
+<div class="count" id="funderCount"></div>
+<div class="funder-grid" id="funderGrid"></div>
+</section>
+
+<!-- Matchmaker Tab -->
+<section id="matchmaker" class="tab-content" role="tabpanel">
+<h2 style="color:var(--c1);margin-bottom:1rem">AI Governance Matchmaker</h2>
+<p style="margin-bottom:1rem;color:#666">Describe your project, community, or goals. The matchmaker will find aligned organizations and funders across our G20 database.</p>
+<textarea class="match-input" id="matchInput" placeholder="Example: We are a tribal nation in Washington state seeking funding for AI governance training and broadband-connected policy automation for our community of 3,000 members..."></textarea>
+<button class="match-btn" onclick="runMatch()">Find Matches</button>
+<div class="results" id="matchResults"></div>
+</section>
+
+<!-- Proposal Generator Tab -->
+<section id="proposals" class="tab-content" role="tabpanel">
+<h2 style="color:var(--c1);margin-bottom:1rem">Grant Proposal Generator</h2>
+<p style="margin-bottom:1rem;color:#666">Select parameters and add context to auto-generate a grant proposal draft.</p>
+<div class="proposal-form">
+<select id="propCountry"><option value="">Select Country</option></select>
+<select id="propTopic"><option value="">Select Topic</option></select>
+<select id="propFunder"><option value="">Select Funder</option></select>
+</div>
+<textarea class="match-input" id="propContext" placeholder="Add specific context about your organization, community, and goals..." style="min-height:80px"></textarea>
+<button class="match-btn" onclick="generateProposal()">Generate Proposal</button>
+<button class="copy-btn" onclick="copyProposal()" style="margin-left:1rem">Copy to Clipboard</button>
+<div id="proposalOutput" class="proposal-output" style="margin-top:1rem"></div>
+</section>
+</main>
+<footer>
+<p>AiGovOps Global Inclusion Matchmaker v1.0.0 | Apache 2.0 License | <a href="https://www.aigovopsfoundation.org/" style="color:var(--c3)">AiGovOps Foundation</a> | <a href="https://github.com/bobrapp/aigovops-global-inclusion-matchmaker" style="color:var(--c3)">GitHub</a></p>
+</footer>
+<script>
